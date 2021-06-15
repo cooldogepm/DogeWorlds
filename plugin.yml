@@ -1,0 +1,21 @@
+name: DogeWorlds
+author: DogeDev
+version: 0.0.1
+api: 4.0.0
+description: "A utility-first tool for worlds management"
+main: DogeDev\DogeWorlds\DogeWorlds
+permissions:
+  dogeworlds.command:
+    default: op
+  dogeworlds.command.create:
+    default: op
+  dogeworlds.command.delete:
+    default: op
+  dogeworlds.command.list:
+    default: op
+  dogeworlds.command.load:
+    default: op
+  dogeworlds.command.teleport:
+    default: op
+  dogeworlds.command.unload:
+    default: op
