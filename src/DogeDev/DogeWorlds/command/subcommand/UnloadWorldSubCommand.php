@@ -21,13 +21,16 @@ class UnloadWorldSubCommand extends WorldSubCommand
             $sender->sendMessage(TextFormat::RED . "Usage /dw unload <world : name> <force : false|true>");
             return;
         }
+
         $name = $args[0];
         $force = $args[1] ?? false;
+
         $world = $this->getPlugin()->getServer()->getWorldManager()->getWorldByName($name);
         if (!$world) {
             $sender->sendMessage(TextFormat::WHITE . $name . TextFormat::RED . " world is not loaded.");
             return;
         }
+
         $sender->sendMessage(TextFormat::WHITE . $world->getFolderName() . TextFormat::RED . " world was successfully unloaded.");
         $this->getPlugin()->getServer()->getWorldManager()->unloadWorld($world, (bool)$force);
     }

@@ -6,7 +6,9 @@ namespace DogeDev\DogeWorlds;
 
 use DogeDev\DogeWorlds\asynchronous\DogeWorldsAsyncPool;
 use DogeDev\DogeWorlds\command\WorldCommand;
+use DogeDev\DogeWorlds\generator\void\VoidGenerator;
 use pocketmine\plugin\PluginBase;
+use pocketmine\world\generator\GeneratorManager;
 
 class DogeWorlds extends PluginBase
 {
@@ -15,6 +17,11 @@ class DogeWorlds extends PluginBase
     public function getAsyncPool(): DogeWorldsAsyncPool
     {
         return $this->asyncPool;
+    }
+
+    protected function onLoad(): void
+    {
+        GeneratorManager::getInstance()->addGenerator(VoidGenerator::class, "void");
     }
 
     protected function onEnable(): void

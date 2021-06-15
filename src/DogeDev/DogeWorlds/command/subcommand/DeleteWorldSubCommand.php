@@ -22,7 +22,9 @@ class DeleteWorldSubCommand extends WorldSubCommand
             $sender->sendMessage(TextFormat::RED . "Usage /dw delete <world : name>");
             return;
         }
+
         $worldName = $args[0];
+
         $worlds = [];
         foreach (scandir($this->getPlugin()->getServer()->getDataPath() . "worlds") as $world) {
             if ($world === "." || $world === ".." || pathinfo($world, PATHINFO_EXTENSION) !== "") {
@@ -30,18 +32,22 @@ class DeleteWorldSubCommand extends WorldSubCommand
             }
             $worlds[] = $world;
         }
+
         if (!in_array($worldName, $worlds)) {
             $sender->sendMessage(TextFormat::WHITE . $worldName . TextFormat::RED . " world was not found.");
             return;
         }
+
         if ($worldName === $this->getPlugin()->getServer()->getWorldManager()->getDefaultWorld()->getFolderName()) {
             $sender->sendMessage(TextFormat::WHITE . $worldName . TextFormat::RED . " world failed to delete, default world cannot be deleted.");
             return;
         }
+
         $world = $this->getPlugin()->getServer()->getWorldManager()->getWorldByName($worldName);
         if ($world) {
             $this->getPlugin()->getServer()->getWorldManager()->unloadWorld($world);
         }
+
         $this->getPlugin()->getAsyncPool()->queueAsyncCallback(new RecursiveDeletionAsyncTask([$this->getPlugin()->getServer()->getDataPath() . DIRECTORY_SEPARATOR . "worlds" . DIRECTORY_SEPARATOR . $worldName]), function (RecursiveDeletionAsyncTask $_task) use ($sender, $worldName): void {
             $sender->sendMessage(TextFormat::WHITE . $worldName . TextFormat::RED . " world was successfully deleted.");
         });

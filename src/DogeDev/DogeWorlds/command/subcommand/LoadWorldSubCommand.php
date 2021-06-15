@@ -21,17 +21,21 @@ class LoadWorldSubCommand extends WorldSubCommand
             $sender->sendMessage(TextFormat::RED . "Usage /dw load <world : name> [auto upgrade : false|true]");
             return;
         }
+
         $name = $args[0];
         $autoUpgrade = $args[1] ?? false;
+
         if ($this->getPlugin()->getServer()->getWorldManager()->isWorldLoaded($name)) {
             $sender->sendMessage(TextFormat::WHITE . $name . TextFormat::RED . " world is already loaded.");
             return;
         }
+
         $succeeded = $this->getPlugin()->getServer()->getWorldManager()->loadWorld($name, $autoUpgrade);
         if (!$succeeded) {
             $sender->sendMessage(TextFormat::WHITE . $name . TextFormat::RED . " world failed to load.");
             return;
         }
+
         $sender->sendMessage(TextFormat::WHITE . $name . TextFormat::GREEN . " world was successfully loaded.");
     }
 }

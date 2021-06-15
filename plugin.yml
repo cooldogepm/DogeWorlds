@@ -3,7 +3,9 @@ author: DogeDev
 version: 0.0.1
 api: 4.0.0
 description: "A utility-first tool for worlds management"
+load: POSTWORLD
 main: DogeDev\DogeWorlds\DogeWorlds
+
 permissions:
   dogeworlds.command:
     default: op

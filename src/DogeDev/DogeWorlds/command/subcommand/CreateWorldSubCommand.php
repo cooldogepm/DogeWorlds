@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DogeDev\DogeWorlds\command\subcommand;
 
 use DogeDev\DogeWorlds\command\WorldCommand;
+use DogeDev\DogeWorlds\utils\DifficultyUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\generator\GeneratorManager;
@@ -38,7 +39,6 @@ class CreateWorldSubCommand extends WorldSubCommand
             if ($world === "." || $world === ".." || isset(pathinfo($world, PATHINFO_EXTENSION)["extension"])) {
                 continue;
             }
-            // Hacky
             $worlds[] = $world;
         }
 
@@ -56,5 +56,6 @@ class CreateWorldSubCommand extends WorldSubCommand
         $options->setGeneratorClass($generator);
         $options->setDifficulty($difficulty === -1 ? 2 : $difficulty);
         $this->getPlugin()->getServer()->getWorldManager()->generateWorld($name, $options);
+        $sender->sendMessage(TextFormat::WHITE . $name . TextFormat::GREEN . " world was created with the " . TextFormat::WHITE . ucwords($generatorName) . TextFormat::GREEN . " generator, " . TextFormat::WHITE . DifficultyUtils::getDifficultyNameFromInteger($difficulty) . TextFormat::GREEN . " difficulty.");
     }
 }

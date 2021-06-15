@@ -24,6 +24,7 @@ class ListWorldSubCommand extends WorldSubCommand
             }
             $worlds[] = $world;
         }
+
         $sender->sendMessage(TextFormat::GREEN . "Worlds List:");
         foreach ($worlds as $world) {
             $sender->sendMessage(($this->getPlugin()->getServer()->getWorldManager()->isWorldLoaded($world) ? TextFormat::GREEN : TextFormat::RED) . $world);
