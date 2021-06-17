@@ -48,7 +48,7 @@ class TeleportWorldSubCommand extends WorldSubCommand
             try {
                 $this->getPlugin()->getServer()->getWorldManager()->loadWorld($worldName);
             } catch (UnsupportedWorldFormatException $exception) {
-                $sender->sendMessage(TextFormat::RED . "That world is not supported, please run /dw load " . TextFormat::WHITE . $worldName . TextFormat::RED . " true to start the conversion process.");
+                $sender->sendMessage(TextFormat::RED . "That world is not supported, use " . TextFormat::WHITE . $worldName . "/dw load " . $worldName . " true" . TextFormat::RED . " to convert the world upon loading.");
                 return;
             }
         }
