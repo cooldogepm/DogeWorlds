@@ -8,6 +8,7 @@ use DogeDev\DogeWorlds\command\WorldCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use pocketmine\world\format\io\exception\UnsupportedWorldFormatException;
 use pocketmine\world\Position;
 
 class TeleportWorldSubCommand extends WorldSubCommand
@@ -44,7 +45,12 @@ class TeleportWorldSubCommand extends WorldSubCommand
 
         if (!$this->getPlugin()->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
             $sender->sendMessage(TextFormat::WHITE . $worldName . TextFormat::GREEN . " world is not loaded, loading the world...");
-            $this->getPlugin()->getServer()->getWorldManager()->loadWorld($worldName);
+            try {
+                $this->getPlugin()->getServer()->getWorldManager()->loadWorld($worldName);
+            } catch (UnsupportedWorldFormatException $exception) {
+                $sender->sendMessage(TextFormat::RED . "That world is not supported, please run /dw load " . TextFormat::WHITE . $worldName . TextFormat::RED . " true to start the conversion process.");
+                return;
+            }
         }
 
         $world = $this->getPlugin()->getServer()->getWorldManager()->getWorldByName($worldName);
