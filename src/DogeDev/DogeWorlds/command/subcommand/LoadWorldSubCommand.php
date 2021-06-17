@@ -30,7 +30,7 @@ class LoadWorldSubCommand extends WorldSubCommand
             return;
         }
 
-        $succeeded = $this->getPlugin()->getServer()->getWorldManager()->loadWorld($name, $autoUpgrade);
+        $succeeded = $this->getPlugin()->getServer()->getWorldManager()->loadWorld($name, (bool)$autoUpgrade);
         if (!$succeeded) {
             $sender->sendMessage(TextFormat::WHITE . $name . TextFormat::RED . " world failed to load.");
             return;
