@@ -1,6 +1,6 @@
 # DogeWorlds
 
-![DogeWorlds](assets/dogeworlds.jpg)
+![DogeWorlds](assets/dogeworlds.png)
 <p align="center">A utility-first tool for worlds management</p>
 
 ## Commands
