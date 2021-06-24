@@ -14,7 +14,7 @@
     "worldTeleportFail": "&cFailed to teleport &f{PLAYER} &c to the &f{WORLD} &cworld."
   },
   "messages": {
-    "worldCreation": "&f{WORLD} &awas successfully created with the &f{GENERATOR} &aand &f{DIFFICULTY} difficulty.",
+    "worldCreation": "&f{WORLD} &awas successfully created with the &f{GENERATOR} &aand &f{DIFFICULTY} &adifficulty.",
     "worldDeletion": "&f{WORLD} &awas successfully deleted.",
     "worldList": "&aWorlds List:",
     "worldLoad": "&f{WORLD} &awas successfully loaded.",

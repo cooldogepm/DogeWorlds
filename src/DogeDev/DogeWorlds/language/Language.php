@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DogeDev\DogeWorlds\language;
 
 use InvalidArgumentException;
+use pocketmine\utils\TextFormat;
 
 class Language
 {
@@ -34,7 +35,7 @@ class Language
     public function getMessage(string $message, array $variables = [], int $type = Language::MESSAGE_TYPE_DEFAULT): string
     {
         $category = $type === Language::MESSAGE_TYPE_DEFAULT ? $this->messages : $this->errors;
-        return isset($category[$message]) ? str_replace(array_keys($variables), array_values($variables), $category[$message]) : "Translation not found.";
+        return isset($category[$message]) ? TextFormat::colorize(str_replace(array_keys($variables), array_values($variables), $category[$message])) : "Translation not found.";
     }
 
     public function getAllMessages(): array
