@@ -1,10 +1,11 @@
 name: DogeWorlds
 author: DogeDev
-version: 0.0.1
+version: 0.0.2
 api: 4.0.0
 description: "A utility-first tool for worlds management"
 load: POSTWORLD
 main: DogeDev\DogeWorlds\DogeWorlds
+website: https://github.com/doge-pm/DogeWorlds/
 
 permissions:
   dogeworlds.command:

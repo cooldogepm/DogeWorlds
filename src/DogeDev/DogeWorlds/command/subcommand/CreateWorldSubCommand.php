@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DogeDev\DogeWorlds\command\subcommand;
 
 use DogeDev\DogeWorlds\command\WorldCommand;
+use DogeDev\DogeWorlds\language\Language;
 use DogeDev\DogeWorlds\utils\DifficultyUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
@@ -24,7 +25,7 @@ class CreateWorldSubCommand extends WorldSubCommand
     {
         $generators = GeneratorManager::getInstance()->getGeneratorList();
         if (count($args) < 2) {
-            $sender->sendMessage(TextFormat::RED . "Usage /dw create <world : name> <generator : " . implode("|", $generators) . "> [difficulty : easy|hard|normal|peaceful]");
+            $sender->sendMessage(TextFormat::RED . "Usage /dw create <world: name> <generator: " . implode("|", $generators) . "> [difficulty: easy|hard|normal|peaceful]");
             return;
         }
 
@@ -35,7 +36,7 @@ class CreateWorldSubCommand extends WorldSubCommand
         $generator = GeneratorManager::getInstance()->getGenerator($generatorName);
 
         $worlds = [];
-        foreach (scandir($this->getPlugin()->getServer()->getDataPath() . "worlds") as $world) {
+        foreach (scandir($this->getOwningPlugin()->getServer()->getDataPath() . "worlds") as $world) {
             if ($world === "." || $world === ".." || isset(pathinfo($world, PATHINFO_EXTENSION)["extension"])) {
                 continue;
             }
@@ -43,19 +44,19 @@ class CreateWorldSubCommand extends WorldSubCommand
         }
 
         if (in_array($name, $worlds)) {
-            $sender->sendMessage(TextFormat::WHITE . $name . TextFormat::RED . " world name is already taken.");
+            $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldNameTaken", ["{WORLD}" => $name], Language::MESSAGE_TYPE_ERROR));
             return;
         }
 
         if ($generator === Normal::class && strtolower($generatorName) !== "normal") {
-            $sender->sendMessage(TextFormat::WHITE . $generatorName . TextFormat::RED . " is not a registered world generator.");
+            $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldGeneratorInvalid", ["{GENERATOR}" => $generatorName], Language::MESSAGE_TYPE_ERROR));
             return;
         }
 
         $options = new WorldCreationOptions();
         $options->setGeneratorClass($generator);
         $options->setDifficulty($difficulty === -1 ? 2 : $difficulty);
-        $this->getPlugin()->getServer()->getWorldManager()->generateWorld($name, $options);
-        $sender->sendMessage(TextFormat::WHITE . $name . TextFormat::GREEN . " world was created with the " . TextFormat::WHITE . ucwords($generatorName) . TextFormat::GREEN . " generator, " . TextFormat::WHITE . DifficultyUtils::getDifficultyNameFromInteger($difficulty) . TextFormat::GREEN . " difficulty.");
+        $this->getOwningPlugin()->getServer()->getWorldManager()->generateWorld($name, $options);
+        $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldCreation", ["{WORLD}" => $name, "{DIFFICULTY}" => DifficultyUtils::getDifficultyNameFromInteger($difficulty), "{GENERATOR}" => ucwords($generatorName)]));
     }
 }

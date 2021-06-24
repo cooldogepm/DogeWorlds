@@ -6,8 +6,8 @@ namespace DogeDev\DogeWorlds\command\subcommand;
 
 use DogeDev\DogeWorlds\command\WorldCommand;
 use DogeDev\DogeWorlds\DogeWorlds;
+use DogeDev\DogeWorlds\language\Language;
 use pocketmine\command\CommandSender;
-use pocketmine\utils\TextFormat;
 
 abstract class WorldSubCommand
 {
@@ -45,7 +45,7 @@ abstract class WorldSubCommand
 
     protected function sendPermissionError(CommandSender $sender): void
     {
-        $sender->sendMessage(TextFormat::RED . "You don't have enough permissions to perform this command.");
+        $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("permissionLack", [], Language::MESSAGE_TYPE_ERROR));
     }
 
     abstract protected function onRun(CommandSender $sender, array $args): void;
@@ -60,9 +60,9 @@ abstract class WorldSubCommand
         return $this->aliases;
     }
 
-    public function getPlugin(): DogeWorlds
+    public function getOwningPlugin(): DogeWorlds
     {
-        return $this->getParentCommand()->getPlugin();
+        return $this->getParentCommand()->getOwningPlugin();
     }
 
     public function getParentCommand(): WorldCommand

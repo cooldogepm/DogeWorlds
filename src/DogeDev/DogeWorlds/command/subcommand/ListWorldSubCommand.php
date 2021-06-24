@@ -18,16 +18,16 @@ class ListWorldSubCommand extends WorldSubCommand
     protected function onRun(CommandSender $sender, array $args): void
     {
         $worlds = [];
-        foreach (scandir($this->getPlugin()->getServer()->getDataPath() . "worlds") as $world) {
+        foreach (scandir($this->getOwningPlugin()->getServer()->getDataPath() . "worlds") as $world) {
             if ($world === "." || $world === ".." || pathinfo($world, PATHINFO_EXTENSION) !== "") {
                 continue;
             }
             $worlds[] = $world;
         }
 
-        $sender->sendMessage(TextFormat::GREEN . "Worlds List:");
+        $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldList"));
         foreach ($worlds as $world) {
-            $sender->sendMessage(($this->getPlugin()->getServer()->getWorldManager()->isWorldLoaded($world) ? TextFormat::GREEN : TextFormat::RED) . $world);
+            $sender->sendMessage(($this->getOwningPlugin()->getServer()->getWorldManager()->isWorldLoaded($world) ? TextFormat::GREEN : TextFormat::RED) . $world);
         }
     }
 }

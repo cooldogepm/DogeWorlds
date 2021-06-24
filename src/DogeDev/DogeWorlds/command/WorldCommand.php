@@ -12,13 +12,17 @@ use DogeDev\DogeWorlds\command\subcommand\TeleportWorldSubCommand;
 use DogeDev\DogeWorlds\command\subcommand\UnloadWorldSubCommand;
 use DogeDev\DogeWorlds\command\subcommand\WorldSubCommand;
 use DogeDev\DogeWorlds\DogeWorlds;
+use DogeDev\DogeWorlds\language\Language;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\plugin\PluginOwned;
+use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
 
-class WorldCommand extends Command
+class WorldCommand extends Command implements PluginOwned
 {
-    protected DogeWorlds $plugin;
+    use PluginOwnedTrait;
+
     /**
      * @var WorldSubCommand[]
      */
@@ -27,7 +31,7 @@ class WorldCommand extends Command
     public function __construct(DogeWorlds $plugin)
     {
         parent::__construct("dogeworlds", "DogeWorlds", "Usage /dw <create|delete|list|load|unload>", ["dw"]);
-        $this->plugin = $plugin;
+        $this->owningPlugin = $plugin;
         $this->subCommands = [];
         $this->prepare();
     }
@@ -45,7 +49,7 @@ class WorldCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$this->testPermission($sender)) {
-            $sender->sendMessage(TextFormat::RED . "You don't have enough permissions to perform this command.");
+            $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("permissionLack", [], Language::MESSAGE_TYPE_ERROR));
             return;
         }
         if (count($args) < 1) {
@@ -70,8 +74,8 @@ class WorldCommand extends Command
         return $this->subCommands;
     }
 
-    public function getPlugin(): DogeWorlds
+    public function getOwningPlugin(): DogeWorlds
     {
-        return $this->plugin;
+        return $this->owningPlugin;
     }
 }

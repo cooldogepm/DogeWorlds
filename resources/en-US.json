@@ -1,0 +1,24 @@
+{
+  "errors": {
+    "permissionLack": "&cYou don't have enough permissions to perform this command.",
+    "playerOffline": "&f{PLAYER} &cis not online.",
+    "worldFormatInvalid": "&c",
+    "worldGeneratorInvalid": "&f{GENERATOR} &cis not a registered world generator.",
+    "worldNameInvalid": "&f{WORLD} &cworld was not found.",
+    "worldNameTaken": "&cAn existing world already has the name &f{WORLD}&c.",
+    "worldDefaultDeletion": "&cFailed to delete the &f{WORLD} &cworld, you can't delete the default world.",
+    "worldAlreadyLoaded": "&cFailed to load the &f{WORLD} &cworld, it's already loaded.",
+    "worldFormatUnsupported": "&cThat world is not supported, use &f/dw load {WORLD} true &cto convert the world upon loading.",
+    "worldLoadingFailed": "&f{WORLD} &cfailed to load due to unknown error.",
+    "worldNotLoaded": "&f{WORLD} &cis not loaded.",
+    "worldTeleportFail": "&cFailed to teleport &f{PLAYER} &c to the &f{WORLD} &cworld."
+  },
+  "messages": {
+    "worldCreation": "&f{WORLD} &awas successfully created with the &f{GENERATOR} &aand &f{DIFFICULTY} difficulty.",
+    "worldDeletion": "&f{WORLD} &awas successfully deleted.",
+    "worldList": "&aWorlds List:",
+    "worldLoad": "&f{WORLD} &awas successfully loaded.",
+    "worldUnload": "&f{WORLD} &awas successfully unloaded.",
+    "worldTeleport": "&f{PLAYER} &awas successfully teleported to the &f{WORLD} &ain {TIME}"
+  }
+}

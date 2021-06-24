@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DogeDev\DogeWorlds\command\subcommand;
 
 use DogeDev\DogeWorlds\command\WorldCommand;
+use DogeDev\DogeWorlds\language\Language;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -21,18 +22,18 @@ class TeleportWorldSubCommand extends WorldSubCommand
     protected function onRun(CommandSender $sender, array $args): void
     {
         if (!$sender instanceof Player && count($args) < 2) {
-            $sender->sendMessage(TextFormat::RED . "Usage /dw teleport <world : name> <player : name>");
+            $sender->sendMessage(TextFormat::RED . "Usage /dw teleport <world: name> <player: name>");
             return;
         }
         if (count($args) < 1) {
-            $sender->sendMessage(TextFormat::RED . "Usage /dw teleport <world : name> [player : name]");
+            $sender->sendMessage(TextFormat::RED . "Usage /dw teleport <world: name> [player: name]");
             return;
         }
 
         $worldName = $args[0];
 
         $worlds = [];
-        foreach (scandir($this->getPlugin()->getServer()->getDataPath() . "worlds") as $world) {
+        foreach (scandir($this->getOwningPlugin()->getServer()->getDataPath() . "worlds") as $world) {
             if ($world === "." || $world === ".." || pathinfo($world, PATHINFO_EXTENSION) !== "") {
                 continue;
             }
@@ -40,43 +41,44 @@ class TeleportWorldSubCommand extends WorldSubCommand
         }
 
         if (!in_array($worldName, $worlds)) {
-            $sender->sendMessage(TextFormat::WHITE . $worldName . TextFormat::RED . " world is not found.");
+            $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldNameInvalid", ["{WORLD}" => $worldName], Language::MESSAGE_TYPE_ERROR));
         }
 
-        if (!$this->getPlugin()->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
-            $sender->sendMessage(TextFormat::WHITE . $worldName . TextFormat::GREEN . " world is not loaded, loading the world...");
+        if (!$this->getOwningPlugin()->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
             try {
-                $this->getPlugin()->getServer()->getWorldManager()->loadWorld($worldName);
+                $this->getOwningPlugin()->getServer()->getWorldManager()->loadWorld($worldName);
             } catch (UnsupportedWorldFormatException $exception) {
-                $sender->sendMessage(TextFormat::RED . "That world is not supported, use " . TextFormat::WHITE . $worldName . "/dw load " . $worldName . " true" . TextFormat::RED . " to convert the world upon loading.");
+                $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldFormatUnsupported", ["{WORLD}" => $worldName], Language::MESSAGE_TYPE_ERROR));
                 return;
             }
         }
 
-        $world = $this->getPlugin()->getServer()->getWorldManager()->getWorldByName($worldName);
+        $world = $this->getOwningPlugin()->getServer()->getWorldManager()->getWorldByName($worldName);
 
         $target = $sender instanceof Player ? $sender : null;
 
         if (isset($args[1])) {
             $target = $args[1];
-            if (!$this->getPlugin()->getServer()->getPlayerByPrefix($target)) {
-                $sender->sendMessage(TextFormat::WHITE . $target . TextFormat::RED . " player is not online.");
+            if (!$this->getOwningPlugin()->getServer()->getPlayerByPrefix($target)) {
+                $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("playerOffline", ["{PLAYER}" => $target], Language::MESSAGE_TYPE_ERROR));
                 return;
             }
-            $target = $this->getPlugin()->getServer()->getPlayerByPrefix($target);
+            $target = $this->getOwningPlugin()->getServer()->getPlayerByPrefix($target);
         }
+
+        $time = microtime(true);
 
         $spawnLocation = $world->getSpawnLocation();
         $world->requestChunkPopulation($spawnLocation->getFloorX() >> 4, $spawnLocation->getFloorZ() >> 4, null)->onCompletion(
-            function () use ($sender, $worldName, $target, $spawnLocation): void {
+            function () use ($sender, $worldName, $target, $time, $spawnLocation): void {
                 if ($target && !$target->isConnected()) {
                     return;
                 }
-                $sender->sendMessage(TextFormat::WHITE . $target->getName() . TextFormat::GREEN . " player was successfully teleported to the " . TextFormat::WHITE . $worldName . TextFormat::GREEN . " world.");
+                $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldTeleport", ["{PLAYER}" => $target->getName(), "{WORLD}" => $worldName, "{TIME}" => $time]));
                 $target->teleport(Position::fromObject($spawnLocation->add(0.5, 0, 0.5), $spawnLocation->getWorld()));
             },
             static function () use ($sender, $worldName, $target): void {
-                $sender->sendMessage(TextFormat::WHITE . $target->getName() . TextFormat::RED . " player failed to teleport to the " . TextFormat::WHITE . $worldName . " world.");
+                $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldTeleportFail", ["{PLAYER}" => $target, "{WORLD}" => $worldName], Language::MESSAGE_TYPE_ERROR));
             }
         );
     }
