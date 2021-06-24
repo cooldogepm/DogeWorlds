@@ -5,5 +5,5 @@ branches:
 projects:
   DogeWorlds:
     path: ""
-    icon: "assets/dogeworlds.jpg"
+    icon: "/assets/dogeworlds.jpg"
 ...
