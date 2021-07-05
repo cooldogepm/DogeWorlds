@@ -32,7 +32,7 @@ class LoadWorldSubCommand extends WorldSubCommand
             return;
         }
 
-        if ($this->getOwningPlugin()->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
+        if (!$this->getOwningPlugin()->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
             $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage("worldNameInvalid", ["{WORLD}" => $worldName], Language::MESSAGE_TYPE_ERROR));
             return;
         }
