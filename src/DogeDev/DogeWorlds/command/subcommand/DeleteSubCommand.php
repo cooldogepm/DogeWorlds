@@ -41,15 +41,7 @@ class DeleteSubCommand extends SubCommand
 
         $worldName = $args[0];
 
-        $worlds = [];
-        foreach (scandir($this->getOwningPlugin()->getServer()->getDataPath() . "worlds") as $world) {
-            if ($world === "." || $world === ".." || pathinfo($world, PATHINFO_EXTENSION) !== "") {
-                continue;
-            }
-            $worlds[] = $world;
-        }
-
-        if (!in_array($worldName, $worlds)) {
+        if (!$this->getOwningPlugin()->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
             $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage(Messages::ERROR_WORLD_NOT_FOUND,
                 [
                     "{WORLD}" => $worldName

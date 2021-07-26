@@ -51,16 +51,8 @@ class CreateSubCommand extends SubCommand
 
         $generator = GeneratorManager::getInstance()->getGenerator($generatorName);
 
-        $worlds = [];
-        foreach (scandir($this->getOwningPlugin()->getServer()->getDataPath() . "worlds") as $world) {
-            if ($world === "." || $world === ".." || isset(pathinfo($world, PATHINFO_EXTENSION)["extension"])) {
-                continue;
-            }
-            $worlds[] = $world;
-        }
-
-        if (in_array($name, $worlds)) {
-            $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage(Messages::ERROR_WORLD_NAME_TAKEN,
+        if ($this->getOwningPlugin()->getServer()->getWorldManager()->isWorldGenerated($name)) {
+            $sender->sendMessage($this->getOwningPlugin()->getLanguage()->getMessage(Messages::ERROR_WORLD_NOT_FOUND,
                 [
                     "{WORLD}" => $name
                 ],
