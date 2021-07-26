@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DogeDev\DogeWorlds\utils;
 
-class DirectoryUtils
+final class DirectoryUtils
 {
     public static function recursiveDelete(string $path): void
     {

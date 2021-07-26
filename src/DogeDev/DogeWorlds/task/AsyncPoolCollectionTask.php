@@ -8,7 +8,7 @@ use DogeDev\DogeWorlds\DogeWorlds;
 use Exception;
 use pocketmine\scheduler\Task;
 
-class AsyncPoolCollectionTask extends Task
+final class AsyncPoolCollectionTask extends Task
 {
     protected DogeWorlds $plugin;
 

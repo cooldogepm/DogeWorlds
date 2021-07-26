@@ -1,24 +1,54 @@
 {
   "errors": {
-    "permissionLack": "&cYou don't have enough permissions to perform this command.",
-    "playerOffline": "&f{PLAYER} &cis not online.",
+    "noEnoughPrivileges": "&cYou don't have enough permissions to perform this command.",
+    "playerIsOffline": "&f{PLAYER} &cis not online.",
     "worldFormatInvalid": "&c",
     "worldGeneratorInvalid": "&f{GENERATOR} &cis not a registered world generator.",
-    "worldNameInvalid": "&f{WORLD} &cworld was not found.",
+    "worldNotFound": "&f{WORLD} &cworld was not found.",
     "worldNameTaken": "&cAn existing world already has the name &f{WORLD}&c.",
-    "worldDefaultDeletion": "&cFailed to delete the &f{WORLD} &cworld, you can't delete the default world.",
+    "worldCannotDeleteDefault": "&cFailed to delete the &f{WORLD} &cworld, you can't delete the default world.",
     "worldAlreadyLoaded": "&cFailed to load the &f{WORLD} &cworld, it's already loaded.",
     "worldFormatUnsupported": "&cThat world is not supported, use &f/dw load {WORLD} true &cto convert the world upon loading.",
     "worldLoadingFailed": "&f{WORLD} &cfailed to load due to unknown error.",
     "worldNotLoaded": "&f{WORLD} &cis not loaded.",
-    "worldTeleportFail": "&cFailed to teleport &f{PLAYER} &c to the &f{WORLD} &cworld."
+    "worldTeleportFail": "&cFailed to teleport &f{PLAYER} &c to the &f{WORLD} &cworld.",
+    "worldRenameFail": "&cFailed to rename &f{WORLD} &c to &f{NEW_WORLD}."
   },
   "messages": {
-    "worldCreation": "&f{WORLD} &awas successfully created with the &f{GENERATOR} &aand &f{DIFFICULTY} &adifficulty.",
-    "worldDeletion": "&f{WORLD} &awas successfully deleted.",
-    "worldList": "&aWorlds List:",
-    "worldLoad": "&f{WORLD} &awas successfully loaded.",
-    "worldUnload": "&f{WORLD} &awas successfully unloaded.",
-    "worldTeleport": "&f{PLAYER} &awas successfully teleported to the &f{WORLD} &ain {TIME}"
+    "worldSuccessfullyCreated": "&f{WORLD} &awas successfully created with the &f{GENERATOR} &aand &f{DIFFICULTY} &adifficulty.",
+    "worldSuccessfullyDeleted": "&f{WORLD} &awas successfully deleted.",
+    "worldSuccessfullyLoaded": "&f{WORLD} &awas successfully loaded.",
+    "worldSuccessfullyRenamed": "&f{WORLD} &awas renamed to &f{NEW_NAME}.",
+    "worldSuccessfullyUnloaded": "&f{WORLD} &awas successfully unloaded.",
+    "worldSuccessfullyTeleported": "&f{PLAYER} &awas successfully teleported to the &f{WORLD} &ain {TIME}",
+    "worldsList": "&aWorlds List:"
+  },
+  "usages": {
+    "default": "&cUsage /dw <create|delete|list|load|rename|unload>",
+    "create": "&cUsage /dw create <world: name> <generator: {GENERATORS}> [difficulty: easy|hard|normal|peaceful]",
+    "delete": "&cUsage /dw delete <world: name>",
+    "load": "&cUsage /dw load <world: name> [auto upgrade: false|true]",
+    "rename": "&cUsage /dw rename <world: name> <new name>",
+    "teleport": "&cUsage /dw teleport <world: name> [player: name]",
+    "teleportConsole": "&cUsage /dw teleport <world: name> <player: name>",
+    "unload": "&cUsage /dw unload <world: name> <force: false|true>"
+  },
+  "aliases": {
+    "default": [
+      "dw"
+    ],
+    "create": [
+      "c"
+    ],
+    "delete": [
+      "del"
+    ],
+    "list": [],
+    "load": [],
+    "rename": [],
+    "teleport": [
+      "tp"
+    ],
+    "unload": []
   }
 }

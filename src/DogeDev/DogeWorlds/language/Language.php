@@ -7,24 +7,28 @@ namespace DogeDev\DogeWorlds\language;
 use InvalidArgumentException;
 use pocketmine\utils\TextFormat;
 
-class Language
+final class Language
 {
-    public const MESSAGE_TYPE_DEFAULT = 0;
-    public const MESSAGE_TYPE_ERROR = 1;
-
     protected string $lang;
-    protected array $errors;
-    protected array $messages;
+    protected ?array $errors;
+    protected ?array $messages;
+    protected ?array $usages;
+    protected ?array $aliases;
 
     public function __construct(string $lang, string $dataPath)
     {
         $this->lang = $lang;
-        if (!file_exists($dataPath . $lang . ".json")) {
-            throw new InvalidArgumentException($lang . "'s language path was not found, make sure your files are up to date.");
+        if (!file_exists($dataPath . $this->getLang() . ".json")) {
+            throw new InvalidArgumentException($this->getLang() . "'s language file was not found.");
         }
         $parsed = json_decode(file_get_contents($dataPath . $lang . ".json"), true);
-        $this->errors = $parsed["errors"];
-        $this->messages = $parsed["messages"];
+        $this->errors = $parsed["errors"] ?? null;
+        $this->messages = $parsed["messages"] ?? null;
+        $this->usages = $parsed["usages"] ?? null;
+        $this->aliases = $parsed["aliases"] ?? null;
+        if (!$this->getMessages() || !$this->getErrors() || !$this->getUsages() || !$this->getAliases()) {
+            throw new InvalidArgumentException($this->getLang() . " is missing translations, an update to your configuration files is required.");
+        }
     }
 
     public function getLang(): string
@@ -32,19 +36,59 @@ class Language
         return $this->lang;
     }
 
-    public function getMessage(string $message, array $variables = [], int $type = Language::MESSAGE_TYPE_DEFAULT): string
-    {
-        $category = $type === Language::MESSAGE_TYPE_DEFAULT ? $this->messages : $this->errors;
-        return isset($category[$message]) ? TextFormat::colorize(str_replace(array_keys($variables), array_values($variables), $category[$message])) : "Translation not found.";
-    }
-
-    public function getAllMessages(): array
+    public function getMessages(): ?array
     {
         return $this->messages;
     }
 
-    public function getAllErrors(): array
+    public function getErrors(): ?array
     {
         return $this->errors;
+    }
+
+    public function getUsages(): ?array
+    {
+        return $this->usages;
+    }
+
+    public function getAliases(): ?array
+    {
+        return $this->aliases;
+    }
+
+    public function getMessage(string $message, array $variables = [], int $type = Messages::MESSAGE_CATEGORY_REGULAR): string
+    {
+        return $this->getString($message, $type) ? TextFormat::colorize(str_replace(array_keys($variables), array_values($variables), $this->getString($message, $type))) : "Translation not found.";
+    }
+
+    public function getString(string $message, int $type = Messages::MESSAGE_CATEGORY_REGULAR): ?string
+    {
+        return $this->getMessagesFromType($type)[$message] ?? null;
+    }
+
+    public function getMessagesFromType(int $type): ?array
+    {
+        switch ($type) {
+            case Messages::MESSAGE_CATEGORY_REGULAR:
+                return $this->getMessages();
+            case Messages::MESSAGE_CATEGORY_ERROR:
+                return $this->getErrors();
+            case Messages::MESSAGE_CATEGORY_USAGE:
+                return $this->getUsages();
+            case Messages::MESSAGE_CATEGORY_ALIAS:
+                return $this->getAliases();
+            default:
+                return null;
+        }
+    }
+
+    public function getArray(string $message, int $type = Messages::MESSAGE_CATEGORY_REGULAR): ?array
+    {
+        return $this->getMessagesFromType($type)[$message] ?? null;
+    }
+
+    public function getInteger(string $message, int $type = Messages::MESSAGE_CATEGORY_REGULAR): ?int
+    {
+        return $this->getMessagesFromType($type)[$message] ?? null;
     }
 }

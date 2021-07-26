@@ -6,7 +6,7 @@ namespace DogeDev\DogeWorlds\utils;
 
 use pocketmine\world\World;
 
-class DifficultyUtils
+final class DifficultyUtils
 {
     public static function getDifficultyNameFromInteger(int $difficulty): string
     {

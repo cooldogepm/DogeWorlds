@@ -1,24 +1,26 @@
 name: DogeWorlds
 author: DogeDev
-version: 0.0.2
+version: 0.0.3
 api: 4.0.0
 description: "A utility-first tool for worlds management"
-load: POSTWORLD
+load: STARTUP
 main: DogeDev\DogeWorlds\DogeWorlds
-website: https://github.com/doge-pm/DogeWorlds/
+website: "https://github.com/doge-pm/DogeWorlds/"
 
 permissions:
   dogeworlds.command:
     default: op
-  dogeworlds.command.create:
+  dogeworlds.subcommmand.create:
     default: op
-  dogeworlds.command.delete:
+  dogeworlds.subcommmand.delete:
     default: op
-  dogeworlds.command.list:
+  dogeworlds.subcommmand.list:
     default: op
-  dogeworlds.command.load:
+  dogeworlds.subcommmand.load:
     default: op
-  dogeworlds.command.teleport:
+  dogeworlds.subcommmand.rename:
     default: op
-  dogeworlds.command.unload:
+  dogeworlds.subcommmand.teleport:
+    default: op
+  dogeworlds.subcommmand.unload:
     default: op
