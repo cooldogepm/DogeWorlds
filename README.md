@@ -1,11 +1,8 @@
 # DogeWorlds
 
-<p align="center">
-
 A utility-first tool for worlds management
 
 ![DogeWorlds](assets/dogeworlds.png)
-</p>
 
 ## Commands
 
